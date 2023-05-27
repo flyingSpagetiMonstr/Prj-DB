@@ -60,7 +60,7 @@
             }, 3000);
             </script>';
         } else {
-            echo "Failed, you will be redirected to the sign in page in 3 seconds<br>";
+            echo "Failed<br>";
             // Redirect to the sign in page
             echo '<script>
             setTimeout(function() {

@@ -9,23 +9,35 @@
 // ====================================================================================
 include "functions.php";
 
-session_start();
-
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-$table = $_GET['table'];
-$_SESSION['table'] = $table;
-
 $connection = connect('mydb');
 
-$table = mysqli_real_escape_string($connection, $table); // not tested yet #######
+session_start();
+
+check();
+
+$table = $_GET['table'];
+if (!in_array($table, tables($connection))) {
+    $table = "";
+}
+$_SESSION['table'] = $table;
+
+echo $table . "<br><br>";
+
 $query = "SELECT * FROM $table";
-$result = mysqli_query($connection, $query);
+
+try {
+    $result = mysqli_query($connection, $query);
+} catch (Exception $e) {
+    echo "Query failed: <br>" . $e->getMessage() . "<br><br>";
+    echo "Probably, no such table." . "<br><br>";
+}
+
 // SELECT * FROM Employee where employeeName = 'Xiao Wang' 
 // SELECT * FROM Employee where employeeName = '' or '1' = '1' 
 // SELECT * FROM Employee; SELECT * FROM Supplier;
-if (mysqli_num_rows($result) > 0) {
+
+
+// if (mysqli_num_rows($result) >= 0) {
     $PRIMARY_KEY = primary_key($table, $connection);
 // $password = $_GET['password'];
 
@@ -82,17 +94,13 @@ if (mysqli_num_rows($result) > 0) {
     }
     echo '</table>';
     // echo "</form>";
-
-
-
     // echo none_null_col($table, $connection)[1];
 
     // $row = mysqli_fetch_assoc($result);
     // foreach ($row as $column_name => $value) {
     //         echo '<th>' . $column_name . '</th>';
     // }// $password = $_GET['password'];
-
-}
+// }
 
 // ====================================================================================
         ?><br/><br/>
@@ -158,7 +166,8 @@ function alter(self, $PRIMARY_KEY_VALUE, $column_name) {
     self.appendChild(form);
 }
 </script>
-        <button onclick="info_prompt();this.style.display='None';">New Row</button><br/><br/>
+        <i>Click on any element to modify, or:</i><br/><br/>
+        <button onclick="info_prompt();this.style.display='None';">Add a New Row</button><br/><br/>
         <?php
             mysqli_close($connection);
         ?>

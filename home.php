@@ -8,27 +8,20 @@
         <?php
         include "functions.php";
         session_start();
-        $privilege = $_SESSION['privilege'];
-        // echo "|", $privilege, "|";
+        check();
+        echo "Welcome, " . $_SESSION['privilege'] . "!<br><br>";
 
         $connection = connect('mydb');
 
-        $sql = "show tables";
-        $result = mysqli_query($connection, $sql);
+        $tables = tables($connection);
+        
 
         echo "Here are the tables in our company's database:<br><br>";
-        if (mysqli_num_rows($result) > 0) {
+        if (count($tables) > 0) {
             echo '<table>';
-            // body of table
-            mysqli_data_seek($result, 0); // Reset result set pointer to the beginning
-            while ($row = mysqli_fetch_assoc($result)) {
+            foreach ($tables as $table) {
                 echo '<tr>';
-                foreach ($row as $table_name) {
-                    // echo '<td onclick = "submitForm('. "'" . $value . "'" . ');">'. $value . '</td>';
-                    // echo '<td onclick = "relink(' . "'" . $raw_name . "', " . "'" . $password . "', " . "'" . $value . "'" . ');">'. $value . '</td>';
-                    // echo '<td onclick = "relink(' . "'" . $raw_name . "', " . "'" . $password . "', " . "'" . $value . "'" . ", 'table'" .');">'. $value . '</td>';
-                    echo '<td onclick = "' . "window.location.href = 'table.php?table=" . $table_name . "';"  . '">'. $table_name . '</td>';
-                }
+                echo '<td onclick = "' . "window.location.href = 'table.php?table=" . $table . "';"  . '">'. $table . '</td>';
                 echo '</tr>';
             }
             echo '</table>';

@@ -10,6 +10,8 @@
 include "functions.php";
 
 session_start();
+check();
+
 $table = $_SESSION['table'];
 $connection = connect('mydb');
 
@@ -17,20 +19,29 @@ $operation = $_GET['operation'];
 $privilege = $_SESSION['privilege'];
 
 if ($privilege == 'stuff') {
-    echo 'You are not allowed to do this.';
+    echo 'You are not allowed to do this.<br><br>';
+    $operation = "";
 }
 
 if ($operation == 'delete') {
     $primaryKeyValue = $_GET['primary_key'];
-    // echo $primaryKeyValue.'<br><br>';
 
     $primaryKeyName = primary_key($table, $connection); 
-    // =========
-    // primaryKeyName primaryKeyValue table_name
+    $query = "DELETE FROM $table WHERE $primaryKeyName = ?";
+
+    $stmt = mysqli_prepare($connection, $query);
+    $type_str = get_type_str($table, $primaryKeyName, $connection);
+
+    mysqli_stmt_bind_param($stmt, $type_str, $primaryKeyValue);
+
+    try {
+        $succeed = mysqli_stmt_execute($stmt);
+    } catch (Exception $e) {
+        echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
+    }
     
-    $query = "DELETE FROM $table WHERE $primaryKeyName = '$primaryKeyValue'";
-    
-    if (mysqli_query($connection, $query)) {
+    mysqli_stmt_close($stmt);
+    if ($succeed) {
         echo "Row deleted successfully.";
     } else {
         echo "Error deleting row: " . mysqli_error($connection);
@@ -40,18 +51,30 @@ if ($operation == 'delete') {
 else if ($operation == 'insert') {
     insert($table, $_POST, $connection);
 }
+// BUG when altering transaction description
 else if ($operation == 'alter') {
     $primaryKeyName = primary_key($table, $connection); 
     $primaryKeyValue = $_GET['primary_key'];
-    $column_name = $_GET['column_name'];
+    $column_name = $_GET['column_name']; // check
+    if (!in_array($column_name, columns($table, $connection))) {
+        $column_name = "";
+    }
     $value = $_POST['value'];
-    $query = "UPDATE $table SET $column_name = '$value' WHERE $primaryKeyName = '$primaryKeyValue'";
+    $query = "UPDATE $table SET $column_name = ? WHERE $primaryKeyName = ?";
+
+    $stmt = mysqli_prepare($connection, $query);
+    $type_str1 = get_type_str($table, $column_name, $connection);
+    $type_str2 = get_type_str($table, $primaryKeyName, $connection);
+
+    mysqli_stmt_bind_param($stmt, $type_str1.$type_str2, $value, $primaryKeyValue);
+
     try {
-        $ret = mysqli_query($connection, $query);
+        $succeed = mysqli_stmt_execute($stmt);
     } catch (Exception $e) {
         echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
     }
-    if ($ret) {
+
+    if ($succeed) {
         echo "Altered successfully.";
     } else {
         echo "Error altering: " . mysqli_error($connection);
