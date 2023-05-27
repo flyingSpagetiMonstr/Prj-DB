@@ -17,21 +17,28 @@ include "functions.php";
 
 // session_start();
 $table = $_SESSION['table'];
-
+// echo $table.'<br><br>';
 $connection = connect($_SESSION['raw_name'], $_SESSION['password']);
 
-$primaryKeyValue = $_GET['primary_key'];
-$primaryKeyName = primary_key($table, $connection); 
-// =========
+// $operation = $_GET['operation'];
 
-$query = "DELETE FROM $table WHERE $primaryKeyName = '$primaryKeyValue'";
+// echo 'AAAAAAAAAAAAA';
+// if ($operation == 'delete') {
+    $primaryKeyValue = $_GET['primary_key'];
+    echo $primaryKeyValue.'<br><br>';
 
-if (mysqli_query($connection, $query)) {
-    echo "Row deleted successfully.";
-} else {
-    echo "Error deleting row: " . mysqli_error($connection);
-}
-echo '<br><br>';
+    $primaryKeyName = primary_key($table, $connection); 
+    // =========
+    
+    $query = "DELETE FROM $table WHERE $primaryKeyName = '$primaryKeyValue'";
+    
+    if (mysqli_query($connection, $query)) {
+        echo "Row deleted successfully.";
+    } else {
+        echo "Error deleting row: " . mysqli_error($connection);
+    }
+    echo '<br><br>';
+// }
 // =========
 // ALTER or DELETE or INSERT
 

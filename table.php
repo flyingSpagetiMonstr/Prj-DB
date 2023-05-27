@@ -28,7 +28,8 @@ if (mysqli_num_rows($result) > 0) {
     $PRIMARY_KEY = primary_key($table, $connection);
 // $password = $_GET['password'];
 
-    echo '<table id = "table">';
+    // echo '<form id="form" action="operation.php?operation=insert">';
+    echo '<table id="table">';
 
     // head of table
     echo '<tr>';
@@ -59,16 +60,21 @@ if (mysqli_num_rows($result) > 0) {
             if ($i == $PRIMARY_KEY_INDEX) {
                 $PRIMARY_KEY_VALUE = $value;
             }
-            echo '<td >'. $value . '</td>';
+            echo '<td>'. $value . '</td>';
             $i++;
         }
         // echo '<td >'.'<button/>'.'</td>';
         // echo '<td id="'.$PRIMARY_KEY_VALUE.'">'.'<button>@</button>'.'</td>';
         echo '<td onclick = "'."window.location.href = 'operation.php?primary_key=".$PRIMARY_KEY_VALUE."';" .'">'.'<button>@</button>'.'</td>';
+        // echo '<td onclick = "'."window.location.href = 'operation.php?primary_key=3';" .'">'.'<button>@</button>'.'</td>';
+        // <td onclick = "window.location.href = 'operation.php?primary_key=3'; "><button>@</button></td>;
+        // <td onclick = "window.location.href = 'operation.php?operation=delete&primary_key=$PRIMARY_KEY_VALUE';"><button>@</button></td>;
 
         echo '</tr>';
     }
     echo '</table>';
+    // echo "</form>";
+
 
 
     // echo none_null_col($table, $connection)[1];
@@ -80,38 +86,42 @@ if (mysqli_num_rows($result) > 0) {
 
 }
 
-mysqli_close($connection);
 // ====================================================================================
         ?><br/><br/>
-        AAAAAAAAAAAAAAAAAAAAAA
 <script type="text/javascript">
 function info_prompt() {
-    // alert(1);
-    // var table = document.getElementById("table");
-    // var newRow = table.insertRow();
-    // alert(1);
-    // // var demands = <?php echo json_encode(none_null_col($_SESSION['table'], $connection)); ?>;
-    // alert(1);
-
-    // alert(demands);
-    // l = table.rows[0].cells.length;
-    // for (let i = 0; i < l; i++) {
-    //     // if (table.rows[0].cells[i].innerHTML in ) {
-            
-    //     // }
-    //     var input = document.createElement("input");
-    //     input.type = "text";
-        
-    //     input.id = "info_id";
-    //     input.name = "info";
-        
-    //     var cell = newRow.insertCell();
-    //     cell.appendChild(input);
-    // }
+    var table = document.getElementById("table");
+    var demands = <?php echo json_encode(none_null_col($_SESSION['table'], $connection)); ?>;
+    var l = table.rows[0].cells.length;
+    
+    var newRow = table.insertRow();
+    for (let i = 0; i < l; i++) {
+        var cell = newRow.insertCell();
+        if (demands.includes(table.rows[0].cells[i].innerHTML)) {
+        var input = document.createElement("input");
+        input.type = "text";
+        input.id = "info_id";
+        input.name = "info" + i;
+        cell.appendChild(input);
+        } else {
+        cell.innerHTML = "";
+        }
+    }
+    var br = document.createElement("br");
+    var form = document.getElementById("form");
+    var submit = document.createElement("input");
+    submit.type = "submit";
+    submit.value = "Submit";
+    form.appendChild(br);
+    form.appendChild(br);
+    form.appendChild(submit);
 }
+
 </script>
-        BBBBBBBBBBBBBBBBBBBBBB
-        <button onclick="info_prompt()">New Row</button><br/><br/>
+        <button onclick="info_prompt();this.style.display='None';">New Row</button><br/><br/>
+        <?php
+            mysqli_close($connection);
+        ?>
     </div>
     </body>
 </html>
