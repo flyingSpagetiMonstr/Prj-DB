@@ -82,7 +82,11 @@ function insert($table, $dict, $connection)
     // echo $types;
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, $types, ...$values);
-    mysqli_stmt_execute($stmt);
+    try {
+        mysqli_stmt_execute($stmt);
+    } catch (Exception $e) {
+        echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
+    }
 
     if (mysqli_stmt_affected_rows($stmt) > 0) {
         echo "Insert operation succedded.", "<br><br>";

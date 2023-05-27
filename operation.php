@@ -1,12 +1,6 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles.css">
-        <script>
-            window.onload = 
-            setTimeout(function () {
-                window.location.href = "table.php?table=<?php session_start(); echo $_SESSION['table'];?>";
-            }, 3000);
-        </script>
     </head>
     <body>
     <div class="container">
@@ -20,6 +14,11 @@ $table = $_SESSION['table'];
 $connection = connect('mydb');
 
 $operation = $_GET['operation'];
+$privilege = $_SESSION['privilege'];
+
+if ($privilege == 'stuff') {
+    echo 'You are not allowed to do this.';
+}
 
 if ($operation == 'delete') {
     $primaryKeyValue = $_GET['primary_key'];
@@ -47,14 +46,31 @@ else if ($operation == 'alter') {
     $column_name = $_GET['column_name'];
     $value = $_POST['value'];
     $query = "UPDATE $table SET $column_name = '$value' WHERE $primaryKeyName = '$primaryKeyValue'";
-    if (mysqli_query($connection, $query)) {
+    try {
+        $ret = mysqli_query($connection, $query);
+    } catch (Exception $e) {
+        echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
+    }
+    if ($ret) {
         echo "Altered successfully.";
     } else {
         echo "Error altering: " . mysqli_error($connection);
     }
     echo '<br><br>';
 }
-// =========
+
+mysqli_close($connection);
+// ====================================================================================
+        ?>
+        <a href="table.php?table=<?php echo $_SESSION['table'];?>">Return to the previous page</a>
+    </div>
+    </body>
+</html>
+
+
+<!-- INSERT INTO Transaction(transactionNo, productNo, purchaseOrderNo) values(3,2,1) -->
+
+<!-- // =========
 // ALTER or DELETE or INSERT
 
 // if insert [click on +] [additional data needed]
@@ -69,19 +85,4 @@ else if ($operation == 'alter') {
 
 // if insert:
 // INSERT INTO $table (None Null, None Null, None Null)
-// VALUES ('value1', 'value2', 'value3');
-
-
-
-
-mysqli_close($connection);
-// ====================================================================================
-        ?>
-        You will be redirected to the previous page in 3 seconds.
-    </div>
-    </body>
-</html>
-
-
-
-<!-- INSERT INTO Transaction(transactionNo, productNo, purchaseOrderNo) values(3,2,1) -->
+// VALUES ('value1', 'value2', 'value3'); -->

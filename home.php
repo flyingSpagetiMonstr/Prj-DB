@@ -9,7 +9,7 @@
         include "functions.php";
         session_start();
         $privilege = $_SESSION['privilege'];
-        echo "|", $privilege, "|";
+        // echo "|", $privilege, "|";
 
         $connection = connect('mydb');
 
