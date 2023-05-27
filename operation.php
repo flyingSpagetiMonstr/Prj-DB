@@ -10,25 +10,24 @@
     </head>
     <body>
     <div class="container">
-        <h2>Welcome</h2>
+        <!-- <h2>Welcome</h2> -->
         <?php
 // ====================================================================================
 include "functions.php";
 
-// session_start();
+session_start();
 $table = $_SESSION['table'];
-// echo $table.'<br><br>';
-$connection = connect($_SESSION['raw_name'], $_SESSION['password']);
+$connection = connect('mydb');
 
-// $operation = $_GET['operation'];
+$operation = $_GET['operation'];
 
-// echo 'AAAAAAAAAAAAA';
-// if ($operation == 'delete') {
+if ($operation == 'delete') {
     $primaryKeyValue = $_GET['primary_key'];
-    echo $primaryKeyValue.'<br><br>';
+    // echo $primaryKeyValue.'<br><br>';
 
     $primaryKeyName = primary_key($table, $connection); 
     // =========
+    // primaryKeyName primaryKeyValue table_name
     
     $query = "DELETE FROM $table WHERE $primaryKeyName = '$primaryKeyValue'";
     
@@ -38,7 +37,23 @@ $connection = connect($_SESSION['raw_name'], $_SESSION['password']);
         echo "Error deleting row: " . mysqli_error($connection);
     }
     echo '<br><br>';
-// }
+}
+else if ($operation == 'insert') {
+    insert($table, $_POST, $connection);
+}
+else if ($operation == 'alter') {
+    $primaryKeyName = primary_key($table, $connection); 
+    $primaryKeyValue = $_GET['primary_key'];
+    $column_name = $_GET['column_name'];
+    $value = $_POST['value'];
+    $query = "UPDATE $table SET $column_name = '$value' WHERE $primaryKeyName = '$primaryKeyValue'";
+    if (mysqli_query($connection, $query)) {
+        echo "Altered successfully.";
+    } else {
+        echo "Error altering: " . mysqli_error($connection);
+    }
+    echo '<br><br>';
+}
 // =========
 // ALTER or DELETE or INSERT
 

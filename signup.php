@@ -1,3 +1,4 @@
+<!-- connect:  use function instead -->
 <!DOCTYPE html>
 <html>
 <head>

@@ -18,16 +18,20 @@
 
 
 	<?php
+    include "functions.php";
+
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
 		$name = $_POST["name"];
 		$hashedpassword = hash('sha256', $_POST["password"]);
-
-        $servername = "localhost";
-        $MySQL_username = "root";
-        $MySQL_password = "MySQLpassword"; // password of root to MySQL
+    
+        // $servername = "localhost";
+        // $MySQL_username = "root";
+        // $MySQL_password = "MySQLpassword"; // password of root to MySQL
         $database = "users";
 
-        $connection = mysqli_connect($servername, $MySQL_username, $MySQL_password, $database);
+        // $connection = mysqli_connect($servername, $MySQL_username, $MySQL_password, $database);
+        $connection = connect($database);
 
 // 
         $query = "SELECT * FROM info where username = ? and password = ?";
@@ -41,6 +45,14 @@
 
         if(mysqli_num_rows($result) == 1) {
             echo "Succeed, you will be redirected to the home page in 3 seconds<br>";
+            session_start();
+            if ($name == 'White') {
+                $_SESSION['privilege'] = 'administrator';
+            }
+            else {
+                $_SESSION['privilege'] = 'stuff';
+            }
+
             // Redirect to the home page
             echo '<script>
             setTimeout(function() {
