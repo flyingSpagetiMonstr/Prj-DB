@@ -73,7 +73,7 @@ function insert($table, $dict, $connection)
             }
             $column_names .= $column_name;
             $placeholders .= "?";
-            $types .= $data_type[0];
+            $types .= get_format_char($data_type);
                 $values[] = $value;
         }
     }
@@ -105,7 +105,8 @@ function get_type_str($table, $column_name, $connection){
     $row = mysqli_fetch_assoc($result);
     mysqli_stmt_close($stmt);
     $data_type = $row['DATA_TYPE'];
-    return $data_type[0];
+    // echo $row['DATA_TYPE'] . "<br>";
+    return get_format_char($data_type);
 }
 
 function tables($connection){
@@ -134,6 +135,35 @@ function check(){
         echo "Sign in first please.<br><br>";
         echo "<a href='signin.php'>Sign in here</a><br/><br/>";
         exit();
+    }
+}
+function get_format_char($data_type) {
+    switch (strtoupper($data_type)) {
+        case "VARCHAR":
+        case "CHAR":
+        case "TEXT":
+        case "ENUM":
+        case "SET":
+            return "s";
+        case "TINYINT":
+        case "SMALLINT":
+        case "MEDIUMINT":
+        case "INT":
+        case "INTEGER":
+            return "i";
+        case "BIGINT":
+            return "b";
+        case "FLOAT":
+        case "DOUBLE":
+        case "DECIMAL":
+            return "d";
+        case "DATE":
+        case "TIME":
+        case "DATETIME":
+        case "TIMESTAMP":
+            return "s";
+        default:
+            return "";
     }
 }
 ?>

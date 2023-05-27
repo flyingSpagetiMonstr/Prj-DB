@@ -40,13 +40,13 @@ if ($operation == 'delete') {
         echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
     }
     
-    mysqli_stmt_close($stmt);
-    if ($succeed) {
+    if ($succeed && mysqli_stmt_affected_rows($stmt) > 0) {
         echo "Row deleted successfully.";
     } else {
-        echo "Error deleting row: " . mysqli_error($connection);
+        echo "Error deleting row. " . mysqli_error($connection);
     }
     echo '<br><br>';
+    mysqli_stmt_close($stmt);
 }
 else if ($operation == 'insert') {
     insert($table, $_POST, $connection);
@@ -61,11 +61,14 @@ else if ($operation == 'alter') {
     }
     $value = $_POST['value'];
     $query = "UPDATE $table SET $column_name = ? WHERE $primaryKeyName = ?";
+    // echo $query."<br>";
 
     $stmt = mysqli_prepare($connection, $query);
     $type_str1 = get_type_str($table, $column_name, $connection);
     $type_str2 = get_type_str($table, $primaryKeyName, $connection);
 
+    // echo $type_str1 .$type_str2 . "<br>";
+    // echo $value .$primaryKeyValue . "<br>";
     mysqli_stmt_bind_param($stmt, $type_str1.$type_str2, $value, $primaryKeyValue);
 
     try {
@@ -74,12 +77,13 @@ else if ($operation == 'alter') {
         echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
     }
 
-    if ($succeed) {
+    if ($succeed && mysqli_stmt_affected_rows($stmt) > 0) {
         echo "Altered successfully.";
     } else {
         echo "Error altering: " . mysqli_error($connection);
     }
     echo '<br><br>';
+    mysqli_stmt_close($stmt);
 }
 
 mysqli_close($connection);
