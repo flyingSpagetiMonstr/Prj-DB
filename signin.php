@@ -1,78 +1,33 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Sign In</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-		<!-- <label for="name">Name:</label> -->
-		<input type="text" name="name" id="name_id" placeholder="Name"><br><br>
+    <head>
+        <title>Sign In</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://unpkg.com/cirrus-ui" type="text/css" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <?php include "functions.php"?>
+    </head>
+    <body>
+        <div class="card Placeholder">
+            <div class="content">
+                <p>
+                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <!-- <label for="name">Name:</label> -->
+                    <input type="text" name="name" id="name_id" placeholder="Name"><br><br>
 
-		<!-- <label for="password">Password:</label> -->
-		<input type="text" name="password" id="password_id" placeholder="Password"><br><br>
+                    <!-- <label for="password">Password:</label> -->
+                    <input type="text" name="password" id="password_id" placeholder="Password"><br><br>
 
-		<input type="submit" name="submit" value="Sign in">
-	</form><br/><br/>
-
-    Does not has an account yet? <a href='signup.php'>Sign up here</a><br/><br/>
-
-
-	<?php
-    include "functions.php";
-
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-		$name = $_POST["name"];
-		$hashedpassword = hash('sha256', $_POST["password"]);
-    
-        // $servername = "localhost";
-        // $MySQL_username = "root";
-        // $MySQL_password = "MySQLpassword"; // password of root to MySQL
-        $database = "users";
-
-        // $connection = mysqli_connect($servername, $MySQL_username, $MySQL_password, $database);
-        $connection = connect($database);
-
-// 
-        $query = "SELECT * FROM info where username = ? and password = ?";
-        $statement = mysqli_prepare($connection, $query);
-        if(!$statement) {
-            die('Query preparation failed: ' . mysqli_error($connection));
-        }
-        mysqli_stmt_bind_param($statement, 'ss', $name, $hashedpassword);
-        $succeed = mysqli_stmt_execute($statement);
-        $result = mysqli_stmt_get_result($statement);
-
-        if(mysqli_num_rows($result) == 1) {
-            // echo "Succeed, you will be redirected to the home page。<br>";
-            session_start();
-            if ($name == 'White') {
-                $_SESSION['privilege'] = 'administrator';
-            }
-            else {
-                $_SESSION['privilege'] = 'stuff';
-            }
-
-            // Redirect to the home page
-            echo '<script>
-            setTimeout(function() {
-                window.location.href = "home.php";
-            }, 0);
-            </script>';
-        } else {
-            echo "Failed<br>";
-            // Redirect to the sign in page
-            // echo '<script>
-            // setTimeout(function() {
-            //     window.location.href = "signin.php";
-            // }, 0);
-            // </script>';
-        }
-// 
-	}
-	?>
-    </div>
-</body>
+                    <input type="submit" name="submit" value="Sign in">
+                    </form>
+                </p>
+                <!-- <div class="card__footer content"> -->
+                Does not has an account yet? <a href='signup.php'>Sign up here</a><br/><br/>
+                <!-- </div> -->
+            </div>
+            <?php include "signin-script.php"?>
+        </div>
+    </body>
 </html>
+

@@ -1,60 +1,32 @@
-<!-- connect:  use function instead -->
-<!DOCTYPE html>
 <html>
-<head>
-	<title>Sign Up</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-		<!-- <label for="name">Name:</label> -->
-		<input type="text" name="name" id="name_id" placeholder="Name"><br><br>
+    <head>
+        <title>Sign Up</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://unpkg.com/cirrus-ui" type="text/css" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        
+        <?php include "functions.php"?>
+    </head>
+    <body>
+        <div class="card Placeholder">
+            <div class="content">
+                <p>
+                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <!-- <label for="name">Name:</label> -->
+                    <input type="text" name="name" id="name_id" placeholder="Name"><br><br>
 
-		<!-- <label for="password">Password:</label> -->
-		<input type="text" name="password" id="password_id" placeholder="Password"><br><br>
+                    <!-- <label for="password">Password:</label> -->
+                    <input type="text" name="password" id="password_id" placeholder="Password"><br><br>
 
-		<input type="submit" name="submit" value="Create account">
-	</form><br/><br/>
-
-    Already has an account? <a href='signin.php'>Sign in here</a><br/><br/>
-
-
-	<?php
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		$name = $_POST["name"];
-		$hashedpassword = hash('sha256', $_POST["password"]);
-
-        $servername = "localhost";
-        $MySQL_username = "root";
-        $MySQL_password = "MySQLpassword"; // password of root to MySQL
-        $database = "users";
-
-        $connection = mysqli_connect($servername, $MySQL_username, $MySQL_password, $database);
-
-// 
-        $query = "INSERT INTO info (username, password) VALUES (?, ?)";
-        // $query = "SELECT * FROM Employee where employeeName = ?";
-        $statement = mysqli_prepare($connection, $query);
-        if(!$statement) {
-            die('Query preparation failed: ' . mysqli_error($connection));
-        }
-        mysqli_stmt_bind_param($statement, 'ss', $name, $hashedpassword);
-        $succeed = mysqli_stmt_execute($statement);
-        $result = mysqli_stmt_get_result($statement);
-
-        if ($succeed) {
-            echo "Succeed, you will be redirected to the sign in page in 3 seconds<br>";
-            // Redirect to the sign in page
-            echo '<script>
-            setTimeout(function() {
-                window.location.href = "signin.php";
-            }, 3000);
-            </script>';
-        }
-// 
-	}
-	?>
-    </div>
-</body>
+                    <input type="submit" name="submit" value="Create account">
+                    </form>
+                </p>
+                Already has an account? <a href='signin.php'>Sign in here</a><br/><br/>
+                <?php include "signup-script.php"?>
+            </div>
+        </div>
+    </body>
 </html>
+

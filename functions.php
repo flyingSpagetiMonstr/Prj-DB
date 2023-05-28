@@ -4,7 +4,7 @@
 function prompt($str) {
     session_start();
     check();
-    echo "<h5><i>Welcome, " . $_SESSION['privilege'] . "!</i></h5>";
+    echo "<h5><i>Welcome, " . $_SESSION['username'] . "!</i></h5>";
     echo "<i>$str</i><br><br>";
 }
 
@@ -90,18 +90,20 @@ function insert($table, $dict, $connection)
 
     $sql = "INSERT INTO $table ($column_names) VALUES ($placeholders)";
     $stmt = mysqli_prepare($connection, $sql);
+
     mysqli_stmt_bind_param($stmt, $types, ...$values);
     try {
-        mysqli_stmt_execute($stmt);
+        $succeed = mysqli_stmt_execute($stmt);
     } catch (Exception $e) {
         echo "Execution failed: <br>" . $e->getMessage() . "<br><br>";    
     }
 
-    if (mysqli_stmt_affected_rows($stmt) > 0) {
+    if ($succeed && mysqli_stmt_affected_rows($stmt) > 0) {
         echo "Insert operation succedded.", "<br><br>";
-    } else {
-        echo "Insert operation failed", "<br><br>";
-    }
+    } 
+    // else if ($succeed == 0) {
+    //     echo "Insert operation failed", "<br><br>";
+    // }
     mysqli_stmt_close($stmt);
 }
 
@@ -140,10 +142,19 @@ function columns($table_name, $connection){
     }
     return $columns;
 }
+
+// sign in check
 function check(){
     if ($_SESSION['privilege'] == "") {
         echo "Sign in first please.<br><br>";
         echo "<a href='signin.php'>Sign in here</a><br/><br/>";
+        exit();
+    }
+}
+function privi_check(){
+    if ($_SESSION['privilege'] == "stuff" && $_SESSION['table'] == "Transaction") {
+        echo "You are not allowed to see/do this.<br>";
+        echo "<a href=".$_SERVER['HTTP_REFERER'].">Return to the previous page</a>";
         exit();
     }
 }
