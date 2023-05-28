@@ -4,7 +4,7 @@
 function prompt($str) {
     session_start();
     check();
-    echo "<i>Welcome, " . $_SESSION['privilege'] . "!</i><br><br>";
+    echo "<h5><i>Welcome, " . $_SESSION['privilege'] . "!</i></h5>";
     echo "<i>$str</i><br><br>";
 }
 

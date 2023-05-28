@@ -8,7 +8,7 @@
         echo '<table>';
         foreach ($tables as $table) {
             echo '<tr>';
-            echo '<td onclick = "' . "window.location.href = 'table.php?table=" . $table . "';"  . '">'. $table . '</td>';
+            echo '<td onclick = "' . "window.location.href = 'table.php?table=" . $table . "';"  . '">'. '<a>' .$table . '</a>' . '</td>';
             echo '</tr>';
         }
         echo '</table>';
