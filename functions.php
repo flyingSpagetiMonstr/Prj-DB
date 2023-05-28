@@ -56,8 +56,12 @@ function insert($table, $dict, $connection)
     foreach ($dict as $key => $value) {
         $sql = "SELECT data_type FROM information_schema.columns WHERE table_name = ? AND column_name = ?";
         $stmt = mysqli_prepare($connection, $sql);
-        mysqli_stmt_bind_param($stmt, "ss", $table, $key); // may fail
-        mysqli_stmt_execute($stmt); // may fail
+        try {
+            mysqli_stmt_bind_param($stmt, "ss", $table, $key);
+            mysqli_stmt_execute($stmt);
+        } catch (Exception $e) {
+            echo "Execution failed when getting data type: <br>" . $e->getMessage() . "<br><br>";    
+        }
         $result = mysqli_stmt_get_result($stmt);
         $row = mysqli_fetch_assoc($result);
 
@@ -166,4 +170,24 @@ function get_format_char($data_type) {
             return "";
     }
 }
+// function truncate_all($connection){
+//     $tables = tables($connection);
+//     foreach ($tables as $table_name) {
+//         echo $table_name, "<br>";
+//         truncate($table_name, $connection);
+//         echo "Truncated<br>";
+//     }
+// }
+
+// function truncate($table_name, $connection){
+//     $sql = "TRUNCATE $table_name";
+//     echo $sql, "<br>";
+//     $result = mysqli_query($connection, $sql);
+
+//     if ($result) {
+//         echo "Truncate operation succedded.", "<br><br>";
+//     } else {
+//         echo "Truncate operation failed", "<br><br>";
+//     }
+// }
 ?>

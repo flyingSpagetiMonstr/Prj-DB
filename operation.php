@@ -12,10 +12,8 @@ include "functions.php";
 session_start();
 check();
 
-$table = $_SESSION['table'];
-$connection = connect('mydb');
-
 $operation = $_GET['operation'];
+// echo  . "<br><br>";
 $privilege = $_SESSION['privilege'];
 
 if ($privilege == 'stuff') {
@@ -23,6 +21,39 @@ if ($privilege == 'stuff') {
     $operation = "";
 }
 
+if ($operation == "backup" || $operation == "recover") {
+    $dump_file = "dumpfile.sql";
+    $mysql_host = "localhost";
+    $mysql_user = "root";
+    $mysql_pass = "MySQLpassword";
+    $mysql_db = "mydb";
+
+    if($operation == "backup"){
+        $command = "mysqldump -h {$mysql_host} -u {$mysql_user} -p{$mysql_pass} {$mysql_db} > {$dump_file}";
+    }
+    else{
+        $connection = mysqli_connect($mysql_host, $mysql_user, $mysql_pass);
+        echo "Conencted to MySQL.<br>";
+        mysqli_query($connection, "DROP DATABASE mydb");
+        mysqli_query($connection, "CREATE DATABASE mydb");
+        echo "que.<br>";
+        $command = "mysql -h {$mysql_host} -u {$mysql_user} -p{$mysql_pass} mydb < {$dump_file}";
+        echo $command;
+        mysqli_close($connection);
+    }
+
+    try {
+        $ret = exec($command);
+        echo("Success.");
+    } catch (Exception $e) {
+        echo "Failed. <br>" . $e->getMessage();
+    }
+    echo "<br/><br/>";
+    $operation = "";
+}
+
+$connection = connect('mydb');
+$table = $_SESSION['table']; // not a must
 if ($operation == 'delete') {
     $primaryKeyValue = $_GET['primary_key'];
 
@@ -85,11 +116,10 @@ else if ($operation == 'alter') {
     echo '<br><br>';
     mysqli_stmt_close($stmt);
 }
-
 mysqli_close($connection);
 // ====================================================================================
         ?>
-        <a href="table.php?table=<?php echo $_SESSION['table'];?>">Return to the previous page</a>
+        <a href="<?php echo $_SERVER['HTTP_REFERER'];?>">Return to the previous page</a>
     </div>
     </body>
 </html>

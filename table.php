@@ -23,14 +23,21 @@ $_SESSION['table'] = $table;
 
 echo $table . "<br><br>";
 
-$query = "SELECT * FROM $table";
 
 try {
-    $result = mysqli_query($connection, $query);
+    $col_result = mysqli_query($connection, "SHOW COLUMNS FROM $table");
+} catch (Exception $e) {
+    echo "Query failed: <br>" . $e->getMessage() . "<br><br>";
+}
+try {
+$result = mysqli_query($connection, "SELECT * FROM $table");
 } catch (Exception $e) {
     echo "Query failed: <br>" . $e->getMessage() . "<br><br>";
     echo "Probably, no such table." . "<br><br>";
 }
+// while() {
+//     echo . "<br>";
+// }
 
 // SELECT * FROM Employee where employeeName = 'Xiao Wang' 
 // SELECT * FROM Employee where employeeName = '' or '1' = '1' 
@@ -46,26 +53,21 @@ try {
 
     // head of table
     echo '<tr>';
-    $row = mysqli_fetch_assoc($result);
-
     $i = 0;
     $PRIMARY_KEY_INDEX = -1; // starts from 0
-    foreach ($row as $column_name => $value) {
-        if ($column_name != $PRIMARY_KEY) {
+    while ($col_info = $col_result->fetch_assoc()) {
+        if ($col_info["Field"] != $PRIMARY_KEY) {
             $i++;
         }
         else {
             $PRIMARY_KEY_INDEX = $i;
         } 
-        echo '<th>' . $column_name . '</th>';
+        echo '<th>' . $col_info["Field"] . '</th>';
     }
-
-    // echo '<th id="'.$column_name.'">'.' | '.'Delete Row'.'</th>';
     echo '<th>'.' | '.'Delete Row'.'</th>';
     echo '</tr>';
 
     // body of table
-    mysqli_data_seek($result, 0); // Reset result set pointer to the beginning
     while ($row = mysqli_fetch_assoc($result)) {
         // get PRIMARY_KEY_VALUE
         $i = 0;
@@ -168,6 +170,7 @@ function alter(self, $PRIMARY_KEY_VALUE, $column_name) {
 </script>
         <i>Click on any element to modify, or:</i><br/><br/>
         <button onclick="info_prompt();this.style.display='None';">Add a New Row</button><br/><br/>
+        <a href="home.php">Return to home page</a>
         <?php
             mysqli_close($connection);
         ?>

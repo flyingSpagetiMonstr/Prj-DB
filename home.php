@@ -9,14 +9,14 @@
         include "functions.php";
         session_start();
         check();
-        echo "Welcome, " . $_SESSION['privilege'] . "!<br><br>";
+        echo "<i>Welcome, " . $_SESSION['privilege'] . "!</i><br><br>";
 
         $connection = connect('mydb');
 
         $tables = tables($connection);
         
 
-        echo "Here are the tables in our company's database:<br><br>";
+        echo "<i>Here are the tables in our company's database:</i><br><br>";
         if (count($tables) > 0) {
             echo '<table>';
             foreach ($tables as $table) {
@@ -28,10 +28,12 @@
         } else {
             echo 'No data available.';
         }
-
         mysqli_close($connection);
         ?><br/><br/>
-        Click one to view details.
+        <i>Click one to view details, or:</i><br/><br/>
+        <a href="operation.php?operation=backup"><button><i>Back up current database</i></button></a><br/><br/>
+        <a href="operation.php?operation=recover"><button><i>Recover database from last backup</i></button></a><br/><br/>
+        
     </div>
     </body>
 </html>

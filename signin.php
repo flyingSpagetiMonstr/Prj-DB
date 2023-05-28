@@ -44,7 +44,7 @@
         $result = mysqli_stmt_get_result($statement);
 
         if(mysqli_num_rows($result) == 1) {
-            echo "Succeed, you will be redirected to the home page in 3 seconds<br>";
+            // echo "Succeed, you will be redirected to the home page。<br>";
             session_start();
             if ($name == 'White') {
                 $_SESSION['privilege'] = 'administrator';
@@ -57,16 +57,16 @@
             echo '<script>
             setTimeout(function() {
                 window.location.href = "home.php";
-            }, 3000);
+            }, 0);
             </script>';
         } else {
             echo "Failed<br>";
             // Redirect to the sign in page
-            echo '<script>
-            setTimeout(function() {
-                window.location.href = "signin.php";
-            }, 3000);
-            </script>';
+            // echo '<script>
+            // setTimeout(function() {
+            //     window.location.href = "signin.php";
+            // }, 0);
+            // </script>';
         }
 // 
 	}
