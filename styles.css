@@ -1,6 +1,12 @@
-.container {
+.middle-it {
     text-align: center;
+    height: 100vh;
+    width: 100%;
+    margin: 0px;
+    justify-content: center;
+    align-items: center;
 }
+
 table{
     margin: 0 auto;
     display: flex;
@@ -8,4 +14,30 @@ table{
     align-items: center;
     /* height: 100vh; */
     text-align: center;
+
+    background-color: aliceblue;
+
+    /* height: 100%;
+    width: 100%; */
+}
+body{
+    background-image: url(Others/正面.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: auto;
+    height: auto;
+    background-size: cover;
+}
+
+.bodycontent{
+  border-radius: 10px;
+  height: 1000px;
+  width: auto;
+  background-color: rgb(255, 255, 255);
+}
+
+
+.card{
+  width:18rem ;
 }

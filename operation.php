@@ -33,12 +33,12 @@ if ($operation == "backup" || $operation == "recover") {
     }
     else{
         $connection = mysqli_connect($mysql_host, $mysql_user, $mysql_pass);
-        echo "Conencted to MySQL.<br>";
+        // echo "Conencted to MySQL.<br>";
         mysqli_query($connection, "DROP DATABASE mydb");
         mysqli_query($connection, "CREATE DATABASE mydb");
-        echo "que.<br>";
+        // echo "que.<br>";
         $command = "mysql -h {$mysql_host} -u {$mysql_user} -p{$mysql_pass} mydb < {$dump_file}";
-        echo $command;
+        // echo $command;
         mysqli_close($connection);
     }
 

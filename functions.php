@@ -1,6 +1,12 @@
 <?php
 
-use function PHPSTORM_META\type;
+// use function PHPSTORM_META\type;
+function prompt($str) {
+    session_start();
+    check();
+    echo "<i>Welcome, " . $_SESSION['privilege'] . "!</i><br><br>";
+    echo "<i>$str</i><br><br>";
+}
 
 function connect($database){
     $servername = "localhost";

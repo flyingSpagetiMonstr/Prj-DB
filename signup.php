@@ -3,14 +3,16 @@
 <html>
 <head>
 	<title>Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-		<label for="name">Name:</label>
-		<input type="text" name="name" id="name_id"><br><br>
+		<!-- <label for="name">Name:</label> -->
+		<input type="text" name="name" id="name_id" placeholder="Name"><br><br>
 
-		<label for="password">Password:</label>
-		<input type="text" name="password" id="password_id"><br><br>
+		<!-- <label for="password">Password:</label> -->
+		<input type="text" name="password" id="password_id" placeholder="Password"><br><br>
 
 		<input type="submit" name="submit" value="Create account">
 	</form><br/><br/>
@@ -53,6 +55,6 @@
 // 
 	}
 	?>
-
+    </div>
 </body>
 </html>
