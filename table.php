@@ -21,6 +21,10 @@
 
     <div class="card real_card middle-it">
         <div class="card__container middle-it" id="before_table" style="display:flex;flex-direction:column;">
+            <form class="middle-it" style="display:flex" method="POST" action=<?php echo $_SERVER['REQUEST_URI'];?>>
+                <label for="condition">Filter:</label>
+                <input type="text" name="condition" placeholder="columnName=value">
+            </form>
             <?php include 'table-script.php';?>
         </div>
 

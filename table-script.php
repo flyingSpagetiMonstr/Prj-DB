@@ -8,12 +8,31 @@ session_start();
 check();
 
 $table = $_GET['table'];
+
 if (!in_array($table, tables($connection))) {
     $table = "";
 }
+
 $_SESSION['table'] = $table;
 
 privi_check();
+
+$condition = $_POST['condition']; // #################################################
+if ($condition) {
+    echo $condition;
+
+    // ##############################################################################
+    $columns = columns($table ,$connection);
+    foreach ($columns as $column) {
+        if (strncmp($condition, $column, strlen($column)) === 0) {
+            // echo "A starts with " . $column . "\n";
+            $condition_col = $column; 
+            break;
+        }
+    }
+}
+echo "<br/><br/>";
+
 
 try {
     $col_result = mysqli_query($connection, "SHOW COLUMNS FROM $table");
@@ -22,7 +41,12 @@ try {
     $fail = 1;
 }
 try {
-$result = mysqli_query($connection, "SELECT * FROM $table");
+    if ($condition) {
+    // if ($condition && $condition_col) {
+        $result = mysqli_query($connection, "SELECT * FROM $table WHERE $condition");
+    } else {
+        $result = mysqli_query($connection, "SELECT * FROM $table");
+    }
 } catch (Exception $e) {
     if ($fail!=1) {
         echo "Query failed: <br>" . $e->getMessage() . "<br><br>";

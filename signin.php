@@ -17,7 +17,7 @@
                     <input type="text" name="name" id="name_id" placeholder="Name"><br><br>
 
                     <!-- <label for="password">Password:</label> -->
-                    <input type="text" name="password" id="password_id" placeholder="Password"><br><br>
+                    <input type="password" name="password" id="password_id" placeholder="Password"><br><br>
 
                     <input type="submit" name="submit" value="Sign in">
                     </form>
