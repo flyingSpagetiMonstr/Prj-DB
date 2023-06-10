@@ -43,6 +43,7 @@ try {
 try {
     if ($condition) {
     // if ($condition && $condition_col) {
+        // echo "SELECT * FROM $table WHERE $condition";
         $result = mysqli_query($connection, "SELECT * FROM $table WHERE $condition");
     } else {
         $result = mysqli_query($connection, "SELECT * FROM $table");
