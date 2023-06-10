@@ -1,4 +1,5 @@
 X/
-backups/
-*.sql
 Others/
+
+# backups/
+*.sql
