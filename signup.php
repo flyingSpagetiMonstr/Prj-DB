@@ -23,7 +23,7 @@
                     <input type="submit" name="submit" value="Create account">
                     </form>
                 </p>
-                Already has an account? <a href='signin.php'>Sign in here</a><br/><br/>
+                <!-- Already has an account? <a href='signin.php'>Sign in here</a><br/><br/> -->
                 <?php include "signup-script.php"?>
             </div>
         </div>

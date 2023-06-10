@@ -10,9 +10,12 @@ $operation = $_GET['operation'];
 // echo  . "<br><br>";
 $privilege = $_SESSION['privilege'];
 
+$table = $_SESSION['table']; // not a must
 if ($privilege == 'stuff') {
-    echo 'You are not allowed to do this.<br><br>';
-    $operation = "";
+    if ($table != 'PurchaseOrder') {
+        echo 'You are not allowed to do this.<br><br>';
+        $operation = "";
+    }
 }
 
 if ($operation == "backup" || $operation == "recover") {
@@ -47,7 +50,6 @@ if ($operation == "backup" || $operation == "recover") {
 }
 
 $connection = connect('mydb');
-$table = $_SESSION['table']; // not a must
 if ($operation == 'delete') {
     $primaryKeyValue = $_GET['primary_key'];
 

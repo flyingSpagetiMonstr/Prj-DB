@@ -28,16 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // $result = mysqli_stmt_get_result($statement);
 
-    if ($succeed && mysqli_stmt_affected_rows($stmt) > 0) {
+    // echo $succeed;
+    // echo mysqli_stmt_affected_rows($statement);
+
+    if ($succeed && (mysqli_stmt_affected_rows($statement) > 0)) {
         echo "Succeed, you can go to the sign in page now<br>";
         echo "<a href='signin.php'>Sign in here</a><br/><br/>";
     }
-    // else if ($succeed == 0) {
-    //     echo "Failed<br>";
-    // }
+    mysqli_stmt_close($statement);
+    mysqli_close($connection);
 }
 ?>
-
-
-
-

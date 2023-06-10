@@ -5,16 +5,8 @@
 
 		$name = $_POST["name"];
 		$hashedpassword = hash('sha256', $_POST["password"]);
-    
-        // $servername = "localhost";
-        // $MySQL_username = "root";
-        // $MySQL_password = "MySQLpassword"; // password of root to MySQL
         $database = "users";
-
-        // $connection = mysqli_connect($servername, $MySQL_username, $MySQL_password, $database);
         $connection = connect($database);
-
-// 
         $query = "SELECT * FROM info where username = ? and password = ?";
         $statement = mysqli_prepare($connection, $query);
         if(!$statement) {
@@ -40,5 +32,7 @@
         } else {
             echo "Failed<br>";
         }
+        mysqli_stmt_close($statement);
+        mysqli_close($connection);
 	}
 ?>
