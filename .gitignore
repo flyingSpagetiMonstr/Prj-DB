@@ -2,4 +2,4 @@ X/
 Others/
 
 # backups/
-*.sql
+# *.sql
