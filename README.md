@@ -1,7 +1,8 @@
 Project of database course at 2nd year. \
 Some functions are not completed yet.
 
-A front-end project based on Apache linux.
+A front-end project based on Apache linux, the aim is to complement a user-friendly interface from web to manipulate a database.
+
 Functions:
 - sign in/out
 - retrieve/delete/add data
