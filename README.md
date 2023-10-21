@@ -11,3 +11,7 @@ Functions:
 - resistence to simple sql-injections
 - access control
 - and some functions are not completed yet ...
+
+Before working on this project I had almost no knowledge about front-end programming and it was finished somehow in a hurry. 
+
+I didn't try any front-end frameworks and the way to complement certain funcitons might be wierd.   
