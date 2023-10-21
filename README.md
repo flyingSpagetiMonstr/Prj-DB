@@ -1,5 +1,4 @@
-Project of database course at 2nd year. \
-Some functions are not completed yet.
+Project of database course at 2nd year. 
 
 A front-end project based on Apache linux, the aim is to complement a user-friendly interface from web to manipulate a database.
 
@@ -11,4 +10,4 @@ Functions:
 - data recovery
 - resistence to simple sql-injections
 - access control
-- ...
+- and some functions are not completed yet ...
