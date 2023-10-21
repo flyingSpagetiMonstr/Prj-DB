@@ -1,4 +1,4 @@
-Project of database course at 2nd year.
+Project of database course at 2nd year. \
 Some functions are not completed yet.
 
 A front-end project based on Apache linux.
