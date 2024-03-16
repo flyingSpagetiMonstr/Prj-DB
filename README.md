@@ -1,6 +1,6 @@
 Project of database course at 2nd year. 
 
-A front-end project based on Apache linux, the aim is to complement a user-friendly interface from web to manipulate a database.
+A front-end project based on Apache linux, the aim is a user-friendly web interface to manipulate a database.
 
 Functions:
 - sign in/out
@@ -12,6 +12,4 @@ Functions:
 - access control
 - and some functions are not completed yet ...
 
-Before working on this project I had almost no knowledge about front-end programming and it was finished somehow in a hurry. 
-
-I didn't try any front-end frameworks and the way of complementing some funcitons might be weird.   
+Before working on this project I had almost no knowledge about front-end programming and it was finished somehow in a hurry. the method of complementing some funcitons may be very weird.   
